@@ -106,7 +106,7 @@ class EventsController < ApplicationController
     end
     # update interval
     config = Config.find(1)
-    p prev_interval = Event.find_by(date: @event.date, start: @event.end)
+    prev_interval = Event.find_by(date: @event.date, start: @event.end)
     current_interval = prev_interval
     current_interval.date = params[:date]
     current_interval.start = params[:end]
@@ -118,7 +118,6 @@ class EventsController < ApplicationController
     current_interval.tax = 0
     current_interval.calendar_color = 'gray'
     if current_interval.save
-      p current_interval
       @event.date = params[:date] || @event.date
       @event.start = params[:start] || @event.start
       @event.end = params[:end] || @event.end
@@ -154,7 +153,6 @@ class EventsController < ApplicationController
       else
         # put back interval
         prev_interval.save
-        p prev_interval
         # put back time slots
         prev_business_times.each do |business_time|
           business_time.available = true
@@ -196,11 +194,9 @@ class EventsController < ApplicationController
     else
       render json: {errors: @event.errors.full_message}
     end
-    p interval = Event.find(params[:id].to_i + 1)
+    interval = Event.find(params[:id].to_i + 1)
     interval.status = "canceled"
-    p interval
     if interval.save
-      p true
       render template: "events/show"
     else
       render json: {errors: @event.errors.full_message}
